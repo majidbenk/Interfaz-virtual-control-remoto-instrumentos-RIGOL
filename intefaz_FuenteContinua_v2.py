@@ -93,12 +93,7 @@ class FuenteContinua:
         resources = self.rm.list_resources()
         
         return resources
-        """
-        # PRUEBA #Dejar esta prueba y en el tfg decir que es para probar si no hay nada conectado
-        resources = ['Op1', 'Op2', 'Op3']
-        return resources
 
-        """
     def Ventana_Aplicacion_transistor (self):
         App_Transistor_window = Toplevel()
         App_Transistor_window.title('PARAMETROS TRANSISTOR')
@@ -146,81 +141,7 @@ class FuenteContinua:
         Graficar_Transistor.grid(row=colocacion_filas, column=1, padx=10, pady=10)
         configuracion_boton(Graficar_Transistor)
 
-        #test borrar y funciona
-        #self.osciloscopio()
-        #print('test',self.vartest) #testborrar3
-    """   
-    def graficar_transistor(self):
-        Puntos_VDS_inicial = float(self.boxtext_variable_VDS.get())/15 #Dividimos VDSmax entre 15 los puntos de VDS para aumentar precision
-        Puntos_VGS_inicial = float(self.boxtext_variable_VGS.get())/5 #Dividimos VGSmax entre 5 para trazar distintas curvas
-        Puntos_VDS_inicial_aux = Puntos_VDS_inicial
-        Puntos_VGS_inicial_aux = Puntos_VGS_inicial +  Puntos_VGS_inicial #Empezamos en un punto alto,dos veces el minimo puesto que para VGS bajas IDS es cercana a 0
-        Puntos_IDS = []
-        Puntos_VDS = []
-        Puntos_VGS = 3.5 #test con 3.5Volt en VGS esto hay que meterlo en un bucle Puntos_vgs[j] y la intensidad que se lee Puntos_IDS[i][j] de manera que haya una ID para cad VGS
-        i=0
-        Canal = ['1','2','3']
-        plotVDS = []
-        plotIDS =[]
-        corriente = 0.4
-        self.instrument.write(':OUTP CH' + str(Canal[0]) + ',' + 'ON') #Encendemos canal 1 
-        self.instrument.write(':OUTP CH' + str(Canal[1]) + ',' + 'ON')  #Encendemos canal 2
-#Barrido de medidas de escritura y lectura para obtener IDS, VGS, VDS de un transistor
-        #Limpiamos primero posibles datos anteriores escritos en fuente tension
-        self.instrument.write(':INST:NSEL ' + str(Canal[0])) #SELECCIONAMOS CANAL AL QUE IRA LA INFORMACION
-        self.instrument.write(':VOLT ' + '0') #SE PONE VOLTAJE A 0 V
-
-        self.instrument.write(':INST:NSEL ' + str(Canal[1])) #SELECCIONAMOS CANAL AL QUE IRA LA INFORMACION
-        self.instrument.write(':VOLT ' + '0') #SE PONE VOLTAJE A 0 V
-
-        time.sleep(1) #SE ENCIENDE INSTRUMENTO Y DELAY 1 SEGUNDO ANTES DE EMPEZAR A CAPTURAR MEDIDAS
-        for i in range(15):
-
-            time.sleep(1) #delay 1 segundos entre cada medida que se envia y se recibe
-
-            #VOLTAJE SALIDA VDS
-            Puntos_VDS.append(Puntos_VDS_inicial_aux)
-            self.instrument.write(':INST:NSEL ' + str(Canal[0])) #SELECCIONAMOS CANAL AL QUE IRA LA INFORMACION. Canal[0] es canal 1 en el RIGOL DP832A
-            self.instrument.write(':VOLT ' + str(Puntos_VDS[i])) #SACAR VOLTAJE EN CANAL  
-            self.instrument.write(':CURR ' + str(corriente)) #SACAR CORRIENTE EN CANAL
-
-            #VOLTAJE SALIDA VGS
-            self.instrument.write(':INST:NSEL ' + str(Canal[1])) #SELECCIONAMOS CANAL AL QUE IRA LA INFORMACION
-            self.instrument.write(':VOLT ' + str(Puntos_VGS)) #SACAR VOLTAJE EN CANAL 
-            self.instrument.write(':CURR ' + str(corriente)) #SACAR CORRIENTE EN CANAL
-
-            #LEEMOS IDS
-            ids_value = self.instrument.query(':MEAS:CURR? CH' + Canal[0])
-            try:
-                Puntos_IDS.append(float(ids_value))
-            except ValueError:
-                Puntos_IDS.append(0.0)  # En caso de error en la lectura, añadimos 0.0
-
-            Puntos_VDS_inicial_aux += Puntos_VDS_inicial #Se va aumentando la VDS que se envia a la fuente de tension
-            Puntos_VGS_inicial_aux += Puntos_VGS_inicial #Se va aumentando la VGS 
-
-            i += 1
-
-
-        plt.figure(figsize=(10, 6))
-        plt.scatter(Puntos_VDS, Puntos_IDS, color='b', marker='o', label='Puntos')
-        plt.plot(Puntos_VDS, Puntos_IDS, color='b')
-        plt.title('GRAFICA IDS - VDS')
-        plt.xlabel('IDS')
-        plt.ylabel('VDS')
-        plt.legend('VGS')
-        plt.grid(True)
-        plt.show()
-
-
-        print('test',self.boxtext_variable_VGS.get()) #testborrar4
-        print('test',Puntos_VDS_inicial) #testborrar5
-        print('Puntos_VDS:', Puntos_VDS)
-        print('Puntos_VGS:', Puntos_VGS)
-        print('Puntos IDS',Puntos_IDS)
-        #escribir en ventana aviso DE QUE CANALES SE ESTAN UTILZIAN Y QUE ES RESPONSABILIDAD DE USUARIO SU VGS Y VDS LIMITE Y QUE EN NEUSTRO CASO HABRIA QUE PONER UN DISIPADOR SI 
-        #QUEREMOS TRABAJAR A MAS DE 4V AUNQUE EL FABRICANTE DIGA QUE VGS Y VDS SEAN 20V
-    """
+ 
 
     def graficar_transistor(self):
         Puntos_VDS_inicial = float(self.boxtext_variable_VDS.get()) / 15  # Dividimos VDSmax entre 15 los puntos de VDS para aumentar precisión
