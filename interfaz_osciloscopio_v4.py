@@ -87,11 +87,6 @@ class Osciloscopio:
         resources = self.rm.list_resources()
         
         return resources
-        """"
-        # PRUEBA #Dejar esta prueba y en el tfg decir que es para probar si no hay nada conectado
-        resources = ['Op1', 'Op2', 'Op3']
-        return resources
-        """
         
         
 #ventana con las opciones del osciloscopio    
